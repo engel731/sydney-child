@@ -1,0 +1,112 @@
+/*
+ Theme Name:   Sydney Child
+ Theme URI:    http://strasbourg.com/sydney-child/
+ Description:  Sydney Child Theme
+ Author:       Tanguy Bazire
+ Template:     sydney
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  sydney-child
+*/
+
+.screenReader { 
+	left: -9999px; 
+	position: absolute; 
+	top: -9999px; 
+}
+
+.thanks { 
+	background: #F2F3F6; 
+	border: 1px solid #7E8AA2; 
+	padding:10px; 
+}
+
+/*****Forms*****/
+
+ol.forms { 
+	float: left; 
+	list-style: none; 
+	margin: 0; 
+	width: 100%; 
+}
+
+ol.forms li { 
+	clear: both; 
+	float: left; 
+	margin-bottom: 18px; 
+	position: relative;
+	width: 100%;
+}
+
+ol.forms label {
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-weight: bold;
+	padding-right: 20px;
+	width: 100px;
+}
+
+ol.forms input, 
+ol.forms textarea {
+	border: 1px solid #7E8AA2;
+	border-radius: 3px;
+	font: inherit;
+	padding: 2px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	width: 234px;
+}
+
+ol.forms textarea { 
+	height: 200px; 
+	width: 234px; 
+}
+
+ol.forms input:focus, 
+ol.forms textarea:focus { 
+	background-color: #f2f3f6; 
+	border-color: #ff9800; 
+}
+
+.error { 
+	color: #f00;
+	text-align: right; 
+}
+
+.main-error { color: #f00 }
+
+ol.forms li .error { 
+	font-size: 12px; 
+	margin-left: 20px; 
+}
+
+ol.forms li.textarea .error {
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100px;
+}
+
+ol.forms li.screenReader { margin-bottom: 0; } 
+
+ol.forms li.buttons, 
+ol.forms li.inline { 
+	float: right; 
+	width: 400px; 
+}
+
+ol.forms li.inline input { width: auto; }
+
+ol.forms li.inline label { 
+	display: inline; 
+	float: none; 
+	width: auto; 
+}
+
+#menu-item-53 {
+	color: red;
+}
