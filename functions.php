@@ -194,3 +194,24 @@ function sydney_child_save_metaboxes($post_ID){
     }
 }
 add_action('save_post', 'sydney_child_save_metaboxes');
+
+
+function sydney_child_modifier_content ($content) {
+    if (is_page('activites-du-mois')) {
+        if(strlen($content) > 150) {
+            $content = substr($content, 0, 150) . ' ...';
+        }
+    }
+    return  $content;
+}
+add_filter( 'the_content', 'sydney_child_modifier_content');
+
+function sydney_child_modifier_title ($title) {
+    if (is_page('activites-du-mois')) {
+        if(strlen($title) > 30) {
+            $title = substr($title, 0, 30) . ' ...';
+        }
+    }
+    return  $title;
+}
+add_filter( 'the_title', 'sydney_child_modifier_title');

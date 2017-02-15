@@ -107,13 +107,9 @@ ol.forms li.inline label {
 	width: auto; 
 }
 
-/* Test */
-
 #mainnav ul li a {
 	line-height: 1;
 }
-
-
 
 .table-responsive tbody > tr:hover td {
 	background-color: rgb(245, 245, 245);

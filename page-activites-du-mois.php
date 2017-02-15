@@ -11,7 +11,7 @@ get_header(); ?>
 		<main id="main" class="post-wrap" role="main">
 
 			<?php $the_query = new WP_Query(array(
-				'post_type' => 'event',
+				'post_type' => 'activity',
 				'posts_per_page' => 10
 			)); ?>
 
