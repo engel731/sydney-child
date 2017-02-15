@@ -107,6 +107,18 @@ ol.forms li.inline label {
 	width: auto; 
 }
 
-#menu-item-53 {
-	color: red;
+/* Test */
+
+#mainnav ul li a {
+	line-height: 1;
+}
+
+
+
+.table-responsive tbody > tr:hover td {
+	background-color: rgb(245, 245, 245);
+}
+
+#mainnav ul li::before {
+	margin: 0 5px;
 }

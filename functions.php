@@ -159,78 +159,20 @@ function sydney_child_activity_init() {
 }
 add_action('init', 'sydney_child_activity_init');
 
-
 /**
- * Enregistre le nouveau type de contenu événemment
- */
-function sydney_child_event_init() {
-    register_post_type(
-        'event',
-        
-        array(
-            'label' => 'event',
-            
-            'labels' => array(
-                'name' => 'Evénements',
-                'singular_name' => 'Evénement',
-                'all_items' => 'Toutes les événements',
-                'add_new_item' => 'Ajouter un événement',
-                'edit_item' => 'Éditer l\'événement',
-                'new_item' => 'Nouvelle événement',
-                'view_item' => 'Voir l\'événement',
-                'search_items' => 'Rechercher parmi les événements',
-                'not_found' => 'Pas d\'événement(s) trouvé',
-                'not_found_in_trash'=> 'Pas d\'événement(s) dans la corbeille'
-            ),
-            
-            'public' => true,
-            'capability_type' => 'post',
-            
-            'supports' => array(
-                'title',
-                'editor'
-            ),
-            
-            'has_archive' => true
-        )
-    );
-}
-add_action('init', 'sydney_child_event_init');
-
-/**
- * Initialise de les nouvelle meta-box pour joindre une activité à l'événement
- * et temporiser l'événemment
+ * Initialise de les nouvelle meta-box pour ajouter la date effective de l'activité
  */
 function sydney_child_init_metaboxes() {
     add_meta_box(
-        'meta_activity', 
-        'Lier une activité à l\'événemment: ', 
-        'sydney_child_meta_activity', 
-        'event', 
-        'normal',
-        'high'
-    );
-
-    add_meta_box(
-        'meta_date', 
-        'Date de l\'evénement : ', 
+        'meta_activity_date', 
+        'Date effective de l\'activité', 
         'sydney_child_meta_date', 
-        'event', 
-        'normal',
+        'activity', 
+        'side',
         'high'
     );
 }
 add_action('add_meta_boxes', 'sydney_child_init_metaboxes');
-
-/**
- * Construit la meta-box pour lier l'activité
- */
-function sydney_child_meta_activity($post) {
-    $activity_name = get_post_meta($post->ID, '_activity_name', true);
-    
-    echo '<label>Perma-lien de l\'activité à lier : </label>';
-    echo '<input type="text" name="activity_name" value="'.$activity_name.'" />';
-}
 
 /**
  * Construit la meta-box pour les horaires de l'évenement
@@ -246,35 +188,9 @@ function sydney_child_meta_date($post) {
  * Enregistre les données des meta-boxes
  */
 function sydney_child_save_metaboxes($post_ID){
-    if(isset($_POST['date_event'], $_POST['hour_event'], $_POST['duration_event'])) {
+    if(isset($_POST['date_event'])) {
         // Enregistre les heures de l'évènement
         update_post_meta($post_ID, '_date_event', esc_html($_POST['date_event']));
     }
-        
-    if(isset($_POST['activity_name'])) {
-        $slug_activity = esc_html($_POST['activity_name']);
-
-        // Lie l'activité à l'évènement
-        update_post_meta($post_ID, '_activity_name', $slug_activity);
-        link_activity($post_ID, $slug_activity);
-    }
 }
 add_action('save_post', 'sydney_child_save_metaboxes');
-
-/**
- * Lie une activité à l'évènement id donné en paramètre
- * @param int $post_ID Id de l'évènement
- * @param string $slug_activity Slug de l'activité à lier
- */
-function link_activity($post_ID, $slug_activity) {
-    $my_query = new WP_Query(array(
-        'post_type' => 'activity',
-        'name' => $slug_activity
-    ));
-
-    if($my_query->have_posts()) {
-        $my_query->the_post();
-
-        update_post_meta($post_ID, '_activity_id', get_the_ID());
-    }
-}

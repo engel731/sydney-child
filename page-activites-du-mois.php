@@ -33,10 +33,10 @@ get_header(); ?>
 					</thead>
 				
 					<tbody>
-						<style>.lign:hover{background-color: rgb(245,245,245)}</style>
+						
 						<?php while($the_query->have_posts()): $the_query->the_post(); ?>
 							<tr class="lign">
-								<td><?php echo get_post_meta($post->ID, '_date_event', true); ?></td>
+								<td><?php echo date('d/m/y', strtotime(get_post_meta($post->ID, '_date_event', true))); ?></td>
 								<td>
 									<?php the_title( 
 										sprintf(
