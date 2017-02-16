@@ -1,87 +1,107 @@
 <?php
 /*
-Template Name: Contact Form
+	Template Name: Contact Form
 */
 ?>
 
-
 <?php 
-//If the form is submitted
-if(isset($_POST['submitted'])) {
+	if(isset($_POST['submitted'])) {
+		//Check to make sure that the title field is not empty
+		if(trim($_POST['title']) === '') {
+			$titleError = 'Indiquez un titre';
+			$hasError = true;
+		} else {
+			$title = trim($_POST['title']);
+		}
 
-	//Check to see if the honeypot captcha field was filled in
-	if(trim($_POST['checking']) !== '') {
-		$captchaError = true;
-	} else {
-	
 		//Check to make sure that the name field is not empty
-		if(trim($_POST['contactName']) === '') {
+		if(trim($_POST['name']) === '') {
 			$nameError = 'Indiquez votre nom';
 			$hasError = true;
 		} else {
-			$name = trim($_POST['contactName']);
+			$name = trim($_POST['name']);
 		}
-		
-		//Check to make sure sure that a valid email address is submitted
-		if(trim($_POST['email']) === '')  {
-			$emailError = 'Indiquez une e-mail valide';
+
+		if(trim($_POST['date']) === '') {
+			$dateError = 'Indiquez une date';
 			$hasError = true;
-		} else if (!eregi("^[A-Z0-9._%-]+@[A-Z0-9._%-]+\.[A-Z]{2,4}$", trim($_POST['email']))) {
-			$emailError = 'Adresse e-mail invalide.';
+		} else if (!strptime($_POST['date'], "d.m.Y")) {
+			$dateError = 'Le format(JJ/MM/AA) de la date est incorect';
+		    $hasError = true;
+		} else {
+			$date = trim($_POST['date']);
+		}
+
+		//Check to make sure sure that a valid date address is submitted
+		if(trim($_POST['mail']) === '')  {
+			$mailError = 'Indiquez une e-mail valide';
+			$hasError = true;
+		} else if (!eregi("^[A-Z0-9._%-]+@[A-Z0-9._%-]+\.[A-Z]{2,4}$", trim($_POST['mail']))) {
+			$mailError = 'Adresse e-mail invalide.';
 			$hasError = true;
 		} else {
-			$email = trim($_POST['email']);
+			$mail = trim($_POST['mail']);
 		}
-			
+
+		if(trim($_POST['nation']) === '') {
+			$nationError = 'Indiquez votre Nationalité';
+			$hasError = true;
+		} else {
+			$nation = trim($_POST['nation']);
+		}
+
 		//Check to make sure comments were entered	
-		if(trim($_POST['comments']) === '') {
-			$commentError = 'Entrez votre message';
+		if(trim($_POST['content']) === '') {
+			$contentError = 'Entrez votre message';
 			$hasError = true;
+		} else if (function_exists('stripslashes')) {
+			$content = stripslashes(trim($_POST['content']));
 		} else {
-			if(function_exists('stripslashes')) {
-				$comments = stripslashes(trim($_POST['comments']));
-			} else {
-				$comments = trim($_POST['comments']);
-			}
+			$content = trim($_POST['content']);
 		}
-			
+
+		//Check to see if the honeypot captcha field was filled in
+		if(isset($_POST['resident']) && $_POST['resident'] == true) {
+			$resident = $_POST['resident'];
+		}
+
 		//If there is no error, send the email
 		if(!isset($hasError)) {
-
-			$emailTo = 'tanguy731@hotmail.fr';
+			$emailTo = get_bloginfo('admin_email');
 			$subject = 'Formulaire de contact de '.$name;
-			$sendCopy = trim($_POST['sendCopy']);
-			$body = "Name: $name \n\nEmail: $email \n\nComments: $comments";
-			$headers = 'De : mon site <'.$emailTo.'>' . "\r\n" . 'R&eacute;pondre &agrave; : ' . $email;
+			
+			$body = "Titre: $title \n\n Nom: $name \n\nDate: $date \n\nNationalit&eacute; : $nation \n\nEmail: $mail \n\nMessage: $content \n\n R&eacute;sident : $resident";
+
+			$headers = 'De : '.get_bloginfo('name').' <'.$emailTo.'>' . "\r\n" . 'R&eacute;pondre &agrave; : ' . $email;
 			
 			mail($emailTo, $subject, $body, $headers);
-
-			if($sendCopy == true) {
-				$subject = 'Formulaire de contact';
-				$headers = 'De : <noreply@somedomain.com>';
-				mail($email, $subject, $body, $headers);
-			}
-
 			$emailSent = true;
-
 		}
 	}
-} ?>
-
+?>
 
 <?php get_header(); ?>
 
 <?php if(isset($emailSent) && $emailSent == true) : ?>
 
-	<div class="thanks">
-		<h2>Merci, <?=$name;?></h2>
-		<p>Votre e-mail a &eacute;t&eacute; envoy&eacute; avec succ&egrave;s. Vous recevrez une r&eacute;ponse sous peu.</p>
-	</div>
+	<div id="primary" class="fp-content-area col-md-12">
+		<main id="main" class="site-main" role="main">
+			<div class="entry-content">
+				<header class="entry-header">
+					<h3>Merci, <?=$name;?></h3>
+				</header><!-- .entry-header -->
+				
+				<div class="entry-post">
+					<p>Votre e-mail a &eacute;t&eacute; envoy&eacute; avec succ&egrave;s. Vous recevrez une r&eacute;ponse sous peu.</p>
+				</div>
+			</div><!-- .entry-content -->
+		</main><!-- #main -->
+	</div><!-- #primary -->
 
 <?php else : ?>
 
 	<?php if (have_posts()) : ?>
-	
+
 		<div id="primary" class="fp-content-area col-md-6">
 			<main id="main" class="site-main" role="main">
 				<div class="entry-content">
@@ -93,61 +113,102 @@ if(isset($_POST['submitted'])) {
 		</div><!-- #primary -->
 		
 		<div id="secondary" class="widget-area col-md-6" role="formulaire de contact">
-			<!--  Formulaire  -->
-			<?php if(isset($hasError) || isset($captchaError)) : ?>
-				<p class="main-error">Une erreur est survenue lors de l'envoi du formulaire.</p>
-			<?php endif; ?>
-	
-			<form action="<?php the_permalink(); ?>" id="contactForm" method="post">
-				<ol class="forms">
+			<form action="<?php the_permalink(); ?>" method="post" class="form-horizontal">
+				<div class="form-group">
+				    <legend>Formulaire de contact</legend>
+				    <!--  Formulaire  -->
+					<?php if(isset($hasError)) : ?>
+						<p class="help-block">Une erreur est survenue lors de l'envoi du formulaire.</p>
+					<?php endif; ?>
+				</div>
+				
+				<div class="row">
+					<div class="form-group">
+						<label for="text" class="col-lg-5 control-label">Titre du message : </label>
+						
+						<div class="col-lg-7">
+							<input name="title" type="text" class="form-control" id="text">
+							<?php if($titleError != '') : ?>
+								<span class="help-block"><?php echo $titleError; ?></span>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
 
-					<li>
-						<label for="contactName">Nom</label>
-						<input type="text" name="contactName" id="contactName" value="<?php if(isset($_POST['contactName'])) echo $_POST['contactName'];?>" class="requiredField" />
-						<?php if($nameError != '') : ?>
-							<span class="error"><?=$nameError;?></span> 
-						<?php endif; ?>
-					</li>
-					
-					<li><label for="email">E-mail</label>
-						<input type="text" name="email" id="email" value="<?php if(isset($_POST['email']))  echo $_POST['email'];?>" class="requiredField email" />
-						<?php if($emailError != '') : ?>
-							<span class="error"><?=$emailError;?></span>
-						<?php endif; ?>
-					</li>
-					
-					<li class="textarea">
-						<label for="commentsText">Message</label>
-						<textarea name="comments" id="commentsText" rows="20" cols="30" class="requiredField">
-							<?php if(isset($_POST['comments'])) { 
-								if(function_exists('stripslashes')) { 
-									echo stripslashes($_POST['comments']); 
-								} else { 
-									echo $_POST['comments']; 
-								} 
-							} ?>
-						</textarea>
-					</li>
-					
-					<li class="inline">
-						<input type="checkbox" name="sendCopy" id="sendCopy" value="true"<?php if(isset($_POST['sendCopy']) && $_POST['sendCopy'] == true) echo ' checked="checked"'; ?> />
-						<label for="sendCopy">Résident de la ville</label>
-					</li>
+				<div class="row">
+					<div class="form-group">
+						<label for="name" class="col-lg-5 control-label">Votre nom : </label>
 						
-					<li class="screenReader">
-						<label for="checking" class="screenReader">
-							Pour envoyer ce formulaire, ne saisissez RIEN dans ce champ
-						</label>
-						<input type="text" name="checking" id="checking" class="screenReader" value="<?php if(isset($_POST['checking']))  echo $_POST['checking'];?>" />
-					</li>
+						<div class="col-lg-7">
+							<input name="name" type="text" class="form-control" id="name">
+							<?php if($nameError != '') : ?>
+								<span class="help-block"><?php echo $nameError; ?></span>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label for="date" class="col-lg-5 control-label">Votre date de naissance : </label>
 						
-					<li class="buttons">
-						<input type="hidden" name="submitted" id="submitted" value="true" />
-						<button type="submit" class="roll-button">Envoyer</button>
-					</li>
-				</ol>
+						<div class="col-lg-7">
+							<input name="date" type="date" class="form-control" id="date">
+							<?php if($dateError != '') : ?>
+								<span class="help-block"><?php echo $dateError; ?></span>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label for="mail" class="col-lg-5 control-label">Votre e-mail : </label>
+						
+						<div class="col-lg-7">
+							<input name="mail" type="email" class="form-control" id="mail">
+							<?php if($mailError != '') : ?>
+								<span class="help-block"><?php echo $mailError; ?></span>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label for="select" class="col-lg-5 control-label">Nationalité : </label>
+						
+						<div class="col-lg-7">
+							<select name="nation" id="select" class="form-control" >
+								<option value="france">Française</option>
+								<option value="americain">Americaine</option>
+								<option value="allemand">Allemande</option>
+								<option value="espagne">Espagnole</option>
+								<option vaelu="anglais">Britannique</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="textarea">Message : </label>
+					<textarea name="content" id="textarea" type="textarea" class="form-control"></textarea>
+					<?php if($contentError != '') : ?>
+						<span class="help-block"><?php echo $contentError; ?></span>
+					<?php endif; ?>
+				</div>
+
+				<div class="checkbox">
+					<label>
+						<input name="resident" type="checkbox"> Résident de la ville
+					</label>
+				</div>
+				
+				<input type="hidden" name="submitted" value="true" />
+				<button type="submit">Envoyer</button>
 			</form>
 		</div><!-- #secondary -->
+		
 	<?php endif; ?>
 <?php endif; ?>
 

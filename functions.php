@@ -34,7 +34,7 @@ function sydney_child_scripts() {
 
 	// Chargement scripts js pour formulaire de contact
 	if (is_page_template( 'tpl/contact-form.php')) { 
-		wp_enqueue_script('contact-form', get_template_directory() . '/js/contact-form.js');
+		/*wp_enqueue_script('contact-form', get_template_directory() . '/js/contact-form.js');*/
 	}
 
 	if ( get_theme_mod('blog_layout') == 'masonry-layout' && (is_home() || is_archive()) ) {
