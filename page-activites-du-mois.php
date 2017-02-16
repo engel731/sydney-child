@@ -17,6 +17,9 @@ get_header(); ?>
 
 			<?php if($the_query->have_posts()) : ?>
 
+			<!-- Cree la fenêtre modale -->
+			<?php echo do_shortcode('[Wow-Modal-Windows id=1]'); ?>
+
 			<section class="table-responsive">
 				<table class="table table-bordered table-condensed">
 					<caption>
@@ -25,10 +28,10 @@ get_header(); ?>
 					
 					<thead>
 						<tr>
-							<th>Date de l'évenement</th>
-							<th>Titre</th>
-							<th>Description</th>
-							<th>Inscription</th>
+							<th><?php _e('Date de l\'évenement'); ?></th>
+							<th><?php _e('Titre'); ?></th>
+							<th><?php _e('Description'); ?></th>
+							<th><?php _e('Inscription'); ?></th>
 						</tr>
 					</thead>
 				
@@ -48,7 +51,7 @@ get_header(); ?>
 								</td>
 								<td><?php the_content(); ?></td>
 								<td>
-									<a class="btn btn-default" href="#">S'inscrire</a>
+									<a id='wow-modal-id-1' class="btn btn-default" href="#"><?php _e('S\'inscrire'); ?></a>
 								</td>
 							</tr>
 							

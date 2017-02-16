@@ -17,12 +17,6 @@
 
 #mainnav ul li::before { margin: 0 5px }
 
-/* Formulaire  */
-
-.form-group input { width: 100% }
-
-.form-group .help-block { color: #CD0129 }
-
 /* Tableau */
 
 .table-responsive tbody > tr:hover td { background-color: rgb(245, 245, 245) }

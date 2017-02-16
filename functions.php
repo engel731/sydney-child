@@ -32,11 +32,6 @@ function sydney_child_scripts() {
 	wp_enqueue_script( 'sydney-main', get_template_directory_uri() . '/js/main.min.js', array('jquery'),'20170127', true );
 	wp_enqueue_script( 'sydney-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
 
-	// Chargement scripts js pour formulaire de contact
-	if (is_page_template( 'tpl/contact-form.php')) { 
-		/*wp_enqueue_script('contact-form', get_template_directory() . '/js/contact-form.js');*/
-	}
-
 	if ( get_theme_mod('blog_layout') == 'masonry-layout' && (is_home() || is_archive()) ) {
 		wp_enqueue_script( 'sydney-masonry-init', get_template_directory_uri() . '/js/masonry-init.js', array('masonry'),'', true );
 	}
