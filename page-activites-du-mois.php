@@ -21,7 +21,7 @@ get_header(); ?>
 			<?php echo do_shortcode('[Wow-Modal-Windows id=1]'); ?>
 
 			<section class="table-responsive">
-				<table class="table table-bordered table-condensed">
+				<table class="table table-bordered table-hover">
 					<caption>
 						<?php the_title( '<h4 class="title-post entry-title">', '</h4>' ); ?>
 					</caption>

@@ -6,9 +6,9 @@
  */
 
 if ( ! function_exists( 'sydney_child_setup' ) ) :
-function sydney_child_setup() {
-	load_theme_textdomain( 'sydney-child', get_template_directory() . '/languages' );
-}
+    function sydney_child_setup() {
+    	load_theme_textdomain( 'sydney-child', get_template_directory() . '/languages' );
+    }
 endif; // sydney_child_setup
 add_action( 'after_setup_theme', 'sydney_child_setup' );
 
@@ -41,57 +41,17 @@ function sydney_child_wpcf7_init() {
  * Enqueue scripts and styles.
  */
 function sydney_child_scripts() {
-	// Chargement fichier style du theme parent
+    // Chargement fichier style du theme parent
 	wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
 	
-	// Chargement font-awesome
-	wp_enqueue_style('font-awesome', get_template_directory_uri() . '/fonts/font-awesome.min.css');
-
-	// Chargement style pour ie9
-	wp_enqueue_style( 'sydney-ie9', get_template_directory_uri() . '/css/ie9.css', array( 'sydney-style' ) );
-	wp_style_add_data( 'sydney-ie9', 'conditional', 'lte IE 9' );
-
-	// Chargement fichier scripts
-	wp_enqueue_script( 'sydney-scripts', get_template_directory_uri() . '/js/scripts.js', array('jquery'),'', true );
-	wp_enqueue_script( 'sydney-main', get_template_directory_uri() . '/js/main.min.js', array('jquery'),'20170127', true );
-	wp_enqueue_script( 'sydney-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
-
-	if ( get_theme_mod('blog_layout') == 'masonry-layout' && (is_home() || is_archive()) ) {
-		wp_enqueue_script( 'sydney-masonry-init', get_template_directory_uri() . '/js/masonry-init.js', array('masonry'),'', true );
-	}
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-
-	// Chargement des google fonts
-	if ( get_theme_mod('body_font_name') !='' ) {
-	    wp_enqueue_style( 'sydney-body-fonts', '//fonts.googleapis.com/css?family=' . esc_attr(get_theme_mod('body_font_name')) );
-	} else {
-	    wp_enqueue_style( 'sydney-body-fonts', '//fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600');
-	}
-
-	if ( get_theme_mod('headings_font_name') !='' ) {
-	    wp_enqueue_style( 'sydney-headings-fonts', '//fonts.googleapis.com/css?family=' . esc_attr(get_theme_mod('headings_font_name')) );
-	} else {
-	    wp_enqueue_style( 'sydney-headings-fonts', '//fonts.googleapis.com/css?family=Raleway:400,500,600');
-	}
-
-    // Fichier styles du theme enfant
+	// Fichier styles du theme enfant
     wp_enqueue_style('sydney-child-style', get_stylesheet_uri());
+    wp_enqueue_style('sydney-child-bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.min.css', array(), true );
 
-    // Initialise les formulaire
+    // Initialise les formulaires
     sydney_child_wpcf7_init();
 }
 add_action('wp_enqueue_scripts', 'sydney_child_scripts');
-
-/**
- * Enqueue Bootstrap
- */
-function sydney_child_enqueue_bootstrap() {
-	wp_enqueue_style( 'sydney-bootstrap', get_template_directory_uri() . '/css/bootstrap/bootstrap.min.css', array(), true );
-}
-add_action('wp_enqueue_scripts', 'sydney_child_enqueue_bootstrap', 9);
 
 /**
  * Register sidebar_index

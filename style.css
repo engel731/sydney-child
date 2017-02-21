@@ -16,7 +16,3 @@
 #mainnav ul li a { line-height: 1 }
 
 #mainnav ul li::before { margin: 0 5px }
-
-/* Tableau */
-
-.table-responsive tbody > tr:hover td { background-color: rgb(245, 245, 245) }
