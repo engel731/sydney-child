@@ -14,6 +14,30 @@ add_action( 'after_setup_theme', 'sydney_child_setup' );
 
 
 /**
+ * Charge les sources des formulaires
+ * Emule le fonctionnement de l'element html5 input date pour tous les naviguateur
+ */
+function sydney_child_wpcf7_init() {
+    // Arrêter le chargement du stylesheet JavaScript et CSS du pugin contact 7 sur toutes les pages
+    add_filter( 'wpcf7_load_js', '__return_false' );
+    add_filter( 'wpcf7_load_css', '__return_false' );
+
+    // Fonctionnalité de repli pour formulaire type date
+    add_filter( 'wpcf7_support_html5_fallback', '__return_true' );
+
+    // Chargement scripts js,css pour formulaire de contact avec "contact 7"
+    if(is_page_template( 'tpl/contact-form.php')) { 
+        if(function_exists( 'wpcf7_enqueue_scripts')) {
+            wpcf7_enqueue_scripts();
+        }
+ 
+        if(function_exists( 'wpcf7_enqueue_styles')) {
+            wpcf7_enqueue_styles();
+        }
+    }
+}
+
+/**
  * Enqueue scripts and styles.
  */
 function sydney_child_scripts() {
@@ -55,6 +79,9 @@ function sydney_child_scripts() {
 
     // Fichier styles du theme enfant
     wp_enqueue_style('sydney-child-style', get_stylesheet_uri());
+
+    // Initialise les formulaire
+    sydney_child_wpcf7_init();
 }
 add_action('wp_enqueue_scripts', 'sydney_child_scripts');
 
